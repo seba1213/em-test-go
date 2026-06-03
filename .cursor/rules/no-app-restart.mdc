@@ -1,0 +1,55 @@
+---
+alwaysApply: true
+---
+
+# No Application Restart Rule
+
+## Rule: Do not restart the application during testing
+
+**Prohibition:** Never run `go run main.go`, `docker-compose up`, or any other application startup commands during testing or debugging sessions.
+
+**Reason:** The application is already running and available for testing.
+
+**Allowed:** 
+- Only test API endpoints using `curl`, `wget`, or similar tools
+- Check application logs if needed
+- Stop the application only when explicitly requested by the user
+
+**Examples of what NOT to do:**
+- `go run main.go`
+- `docker-compose up -d`
+- `docker-compose restart`
+- Any command that starts or restarts the application
+
+**Examples of what TO do:**
+- `curl http://localhost:9966/api/v1/health`
+- `curl -X POST http://localhost:9966/api/v1/users/login`
+- Check logs: `docker-compose logs app`
+- Test endpoints without restarting
+
+**Exception:** Only restart the application when the user explicitly requests it or when there are code changes that require a restart.# No Application Restart Rule
+
+## Rule: Do not restart the application during testing
+
+**Prohibition:** Never run `go run main.go`, `docker-compose up`, or any other application startup commands during testing or debugging sessions.
+
+**Reason:** The application is already running and available for testing.
+
+**Allowed:** 
+- Only test API endpoints using `curl`, `wget`, or similar tools
+- Check application logs if needed
+- Stop the application only when explicitly requested by the user
+
+**Examples of what NOT to do:**
+- `go run main.go`
+- `docker-compose up -d`
+- `docker-compose restart`
+- Any command that starts or restarts the application
+
+**Examples of what TO do:**
+- `curl http://localhost:9966/api/v1/health`
+- `curl -X POST http://localhost:9966/api/v1/users/login`
+- Check logs: `docker-compose logs app`
+- Test endpoints without restarting
+
+**Exception:** Only restart the application when the user explicitly requests it or when there are code changes that require a restart.

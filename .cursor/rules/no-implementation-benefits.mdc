@@ -1,0 +1,77 @@
+---
+alwaysApply: true
+---
+
+# No Implementation Benefits Rule
+
+## Rule: Do not write implementation benefits in code or chat
+
+**Prohibition:** Never write about implementation benefits, advantages, or features in:
+- Code comments
+- Documentation within code files
+- README files
+- API documentation
+- Code examples
+- Function descriptions
+- Variable comments
+- Chat conversations
+- Technical discussions
+- Project summaries
+
+**Examples of what NOT to write:**
+- `// Benefits: This provides better performance`
+- `// Advantages: More flexible than the old approach`
+- `// Features: Supports unlimited connections`
+- `// This implementation is better because...`
+- `// Improved scalability and maintainability`
+- `// Enhanced user experience`
+- "Преимущества новой структуры"
+- "Гибкость и масштабируемость"
+- "Улучшенная производительность"
+- "Лучший подход к решению"
+
+**Allowed:** Only write:
+- What the code does (functional description)
+- How to use it (usage instructions)
+- Technical requirements
+- Error handling
+- Parameters and return values
+
+**Examples of what TO write:**
+- `// Calculates hash from subtitle text`
+- `// Validates user input`
+- `// Returns list of subtitles for video`
+- `// Handles database connection`
+- `// Parses JSON request body`
+
+**Enforcement:** This rule applies to all code, documentation, and chat conversations. It helps maintain professional standards and focuses on functionality rather than marketing language.# No Implementation Benefits Rule
+
+## Rule: Do not write implementation benefits in code or chat
+
+**Prohibition:** Never write about implementation benefits, advantages, or features in:
+- Code comments
+- Documentation within code files
+- README files
+- API documentation
+- Code examples
+- Function descriptions
+- Variable comments
+- Chat conversations
+- Technical discussions
+- Project summaries
+
+**Examples of what NOT to write:**
+- "Преимущества новой структуры"
+- "Гибкость и масштабируемость"
+- "Улучшенная производительность"
+- "Лучший подход к решению"
+
+**Allowed:** Only write:
+- What the code does (functional description)
+- How to use it (usage instructions)
+- Technical requirements
+- Error handling
+- Parameters and return values
+
+
+**Enforcement:** This rule applies to all code, documentation, and chat conversations. It helps maintain professional standards and focuses on functionality rather than marketing language.

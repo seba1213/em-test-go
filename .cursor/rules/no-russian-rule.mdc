@@ -1,0 +1,22 @@
+---
+alwaysApply: true
+---
+
+# No Russian Language Rule
+
+## Rule: Do not use Russian language in code
+
+**Prohibition:** Never use Russian language in any code files, including:
+- Variable names
+- Function names
+- Class names
+- Comments
+- String literals
+- Documentation
+- Error messages
+- Log messages
+
+**Allowed:** Only English language should be used in code.
+
+**Exceptions:** 
+- Configuration files with Russian values (if required by external systems)

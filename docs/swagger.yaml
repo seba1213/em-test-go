@@ -1,0 +1,434 @@
+basePath: /v1
+definitions:
+  controllers.APIBadRequestResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/controllers.apiErrorData'
+        x-nullable: true
+      message:
+        example: invalid subscription id
+        type: string
+      status:
+        example: failed
+        type: string
+    type: object
+  controllers.APIInternalErrorResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/controllers.apiErrorData'
+        x-nullable: true
+      message:
+        example: database error
+        type: string
+      status:
+        example: failed
+        type: string
+    type: object
+  controllers.APINotFoundResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/controllers.apiErrorData'
+        x-nullable: true
+      message:
+        example: subscription not found
+        type: string
+      status:
+        example: failed
+        type: string
+    type: object
+  controllers.APIUnauthorizedResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/controllers.apiErrorData'
+        x-nullable: true
+      message:
+        example: no or empty x-api-key
+        type: string
+      status:
+        example: failed
+        type: string
+    type: object
+  controllers.HealthErrorResponse:
+    properties:
+      error:
+        type: string
+      message:
+        example: Database ping failed
+        type: string
+      status:
+        example: unhealthy
+        type: string
+    type: object
+  controllers.HealthSuccessResponse:
+    properties:
+      message:
+        example: Service is running
+        type: string
+      status:
+        example: healthy
+        type: string
+      version:
+        example: dev
+        type: string
+    type: object
+  controllers.SubscriptionCostSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.SubscriptionCostResult'
+      status:
+        example: success
+        type: string
+    type: object
+  controllers.SubscriptionDeleteResponse:
+    properties:
+      message:
+        example: subscription deleted
+        type: string
+      status:
+        example: success
+        type: string
+    type: object
+  controllers.SubscriptionSuccessResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Subscription'
+      status:
+        example: success
+        type: string
+    type: object
+  controllers.apiErrorData:
+    type: object
+  models.Subscription:
+    properties:
+      end_date:
+        type: string
+      id:
+        type: integer
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+  models.SubscriptionCostResult:
+    properties:
+      period_end:
+        type: string
+      period_start:
+        type: string
+      service_name:
+        type: string
+      total:
+        type: integer
+      user_id:
+        type: string
+    type: object
+  models.SubscriptionToSave:
+    properties:
+      end_date:
+        type: string
+      price:
+        example: 199.75
+        minimum: 0
+        type: number
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    required:
+    - service_name
+    - start_date
+    - user_id
+    type: object
+  models.SubscriptionToUpdate:
+    properties:
+      end_date:
+        type: string
+      price:
+        example: 199.75
+        minimum: 0
+        type: number
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    type: object
+info:
+  contact: {}
+  description: CRUDL API for subscription records.
+  title: Subscriptions API
+paths:
+  /health:
+    get:
+      description: Returns service and database health status
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.HealthSuccessResponse'
+        "503":
+          description: Service Unavailable
+          schema:
+            $ref: '#/definitions/controllers.HealthErrorResponse'
+      summary: Health check
+      tags:
+      - health
+  /subscription-cost:
+    get:
+      description: 'Sums monthly prices for subscriptions active during the period.
+        Optional filters: user_id, service_name.'
+      parameters:
+      - description: Period start (MM-YYYY)
+        in: query
+        name: period_start
+        required: true
+        type: string
+      - description: Period end (MM-YYYY)
+        in: query
+        name: period_end
+        required: true
+        type: string
+      - description: Filter by user UUID
+        in: query
+        name: user_id
+        type: string
+      - description: Filter by subscription service name
+        in: query
+        name: service_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SubscriptionCostSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Total subscription cost for a period
+      tags:
+      - subscription-cost
+  /subscriptions/create:
+    post:
+      consumes:
+      - application/json
+      description: Creates a subscription record.
+      parameters:
+      - description: Subscription payload
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.SubscriptionToSave'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/controllers.SubscriptionSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create subscription
+      tags:
+      - subscriptions
+  /subscriptions/delete/{id}:
+    delete:
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SubscriptionDeleteResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.APINotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete subscription
+      tags:
+      - subscriptions
+  /subscriptions/get/{id}:
+    get:
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SubscriptionSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.APINotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get subscription
+      tags:
+      - subscriptions
+  /subscriptions/list:
+    get:
+      description: Returns a paginated list. Optional filter by user_id.
+      parameters:
+      - description: Filter by user UUID
+        in: query
+        name: user_id
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Page size
+        in: query
+        name: size
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: List subscriptions
+      tags:
+      - subscriptions
+  /subscriptions/update/{id}:
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Subscription ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Fields to update
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/models.SubscriptionToUpdate'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.SubscriptionSuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.APIBadRequestResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/controllers.APIUnauthorizedResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.APINotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.APIInternalErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update subscription
+      tags:
+      - subscriptions
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: x-api-key
+    type: apiKey
+swagger: "2.0"

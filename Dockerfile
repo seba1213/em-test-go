@@ -1,0 +1,30 @@
+FROM golang:1.25-alpine AS builder
+
+WORKDIR /app
+
+COPY go.mod go.sum ./
+RUN go mod download
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -o em-test-go .
+
+FROM alpine:latest
+
+RUN adduser -D -g '' appuser && \
+    apk add --no-cache ca-certificates wget
+
+WORKDIR /app
+
+COPY --from=builder /app/em-test-go /app/em-test-go
+
+RUN chown -R appuser:appuser /app
+
+USER appuser
+
+EXPOSE 8080
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 -O /dev/null http://localhost:8080/v1/health || exit 1
+
+ENTRYPOINT ["/app/em-test-go"]
