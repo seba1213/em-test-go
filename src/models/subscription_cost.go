@@ -6,11 +6,11 @@ import (
 
 // SubscriptionCostResult holds the total cost for a requested period and applied filters.
 type SubscriptionCostResult struct {
-	Total       int     `json:"total"`
-	PeriodStart string  `json:"period_start"`
-	PeriodEnd   string  `json:"period_end"`
-	UserID      *string `json:"user_id,omitempty"`
-	ServiceName string  `json:"service_name,omitempty"`
+	Total       int     `json:"total" example:"4800"`
+	PeriodStart string  `json:"period_start" example:"01-2024"`
+	PeriodEnd   string  `json:"period_end" example:"12-2024"`
+	UserID      *string `json:"user_id,omitempty" example:"60601fee-2bf1-4721-ae6f-7636e79a0cba"`
+	ServiceName string  `json:"service_name,omitempty" example:"Yandex Plus"`
 }
 
 // SubscriptionCostParams defines period bounds and optional filters for cost calculation.

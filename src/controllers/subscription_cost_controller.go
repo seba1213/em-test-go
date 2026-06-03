@@ -15,10 +15,10 @@ import (
 // @Tags         subscription-cost
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        period_start   query     string  true   "Period start (MM-YYYY)"
-// @Param        period_end     query     string  true   "Period end (MM-YYYY)"
-// @Param        user_id        query     string  false  "Filter by user UUID"
-// @Param        service_name   query     string  false  "Filter by subscription service name"
+// @Param        period_start   query     string  true   "Period start (MM-YYYY)"  default(01-2024)
+// @Param        period_end     query     string  true   "Period end (MM-YYYY)"  default(12-2024)
+// @Param        user_id        query     string  false  "Filter by user UUID"  default(60601fee-2bf1-4721-ae6f-7636e79a0cba)
+// @Param        service_name   query     string  false  "Filter by subscription service name"  default(Yandex Plus)
 // @Success      200            {object}  SubscriptionCostSuccessResponse
 // @Failure      400            {object}  APIBadRequestResponse
 // @Failure      401            {object}  APIUnauthorizedResponse

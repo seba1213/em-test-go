@@ -112,7 +112,7 @@ func CreateSubscription(c *gin.Context) {
 // @Tags         subscriptions
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id   path      int  true  "Subscription ID"
+// @Param        id   path      int  true  "Subscription ID"  default(1)
 // @Success      200  {object}  SubscriptionSuccessResponse
 // @Failure      400  {object}  APIBadRequestResponse
 // @Failure      401  {object}  APIUnauthorizedResponse
@@ -150,9 +150,9 @@ func GetSubscription(c *gin.Context) {
 // @Tags         subscriptions
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        user_id  query     string  false  "Filter by user UUID"
-// @Param        page     query     int     false  "Page number"
-// @Param        size     query     int     false  "Page size"
+// @Param        user_id  query     string  false  "Filter by user UUID"  default(60601fee-2bf1-4721-ae6f-7636e79a0cba)
+// @Param        page     query     int     false  "Page number"  default(0)
+// @Param        size     query     int     false  "Page size"  default(10)
 // @Success      200      {object}  map[string]interface{}
 // @Failure      400      {object}  APIBadRequestResponse
 // @Failure      401      {object}  APIUnauthorizedResponse
@@ -302,7 +302,7 @@ func UpdateSubscription(c *gin.Context) {
 // @Tags         subscriptions
 // @Produce      json
 // @Security     ApiKeyAuth
-// @Param        id   path      int  true  "Subscription ID"
+// @Param        id   path      int  true  "Subscription ID"  default(1)
 // @Success      200  {object}  SubscriptionDeleteResponse
 // @Failure      400  {object}  APIBadRequestResponse
 // @Failure      401  {object}  APIUnauthorizedResponse

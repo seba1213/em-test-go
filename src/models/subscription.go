@@ -13,28 +13,28 @@ import (
 
 // Subscription stores a user subscription record (user existence is not validated).
 type Subscription struct {
-	ID          int       `gorm:"primaryKey" json:"id"`
-	ServiceName string    `gorm:"not null" json:"service_name"`
-	Price       int       `gorm:"not null" json:"price"`
-	UserID      uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id"`
-	StartDate   string    `gorm:"not null" json:"start_date"`
-	EndDate     string    `json:"end_date"`
+	ID          int       `gorm:"primaryKey" json:"id" example:"1"`
+	ServiceName string    `gorm:"not null" json:"service_name" example:"Yandex Plus"`
+	Price       int       `gorm:"not null" json:"price" example:"400"`
+	UserID      uuid.UUID `gorm:"type:uuid;not null;index" json:"user_id" example:"60601fee-2bf1-4721-ae6f-7636e79a0cba"`
+	StartDate   string    `gorm:"not null" json:"start_date" example:"01-2024"`
+	EndDate     string    `json:"end_date" example:"12-2025"`
 }
 
 type SubscriptionToSave struct {
-	ServiceName string      `json:"service_name" binding:"required"`
+	ServiceName string      `json:"service_name" binding:"required" example:"Yandex Plus"`
 	Price       PriceRubles `json:"price" binding:"gte=0" swaggertype:"number" minimum:"0" example:"199.75"`
-	UserID      string      `json:"user_id" binding:"required,uuid"`
-	StartDate   string      `json:"start_date" binding:"required"`
-	EndDate     string      `json:"end_date"`
+	UserID      string      `json:"user_id" binding:"required,uuid" example:"60601fee-2bf1-4721-ae6f-7636e79a0cba"`
+	StartDate   string      `json:"start_date" binding:"required" example:"01-2024"`
+	EndDate     string      `json:"end_date" example:"12-2025"`
 }
 
 type SubscriptionToUpdate struct {
-	ServiceName *string      `json:"service_name"`
-	Price       *PriceRubles `json:"price" binding:"omitempty,gte=0" swaggertype:"number" minimum:"0" example:"199.75"`
-	UserID      *string      `json:"user_id" binding:"omitempty,uuid"`
-	StartDate   *string      `json:"start_date" binding:"omitempty"`
-	EndDate     string       `json:"end_date" binding:"omitempty"`
+	ServiceName *string      `json:"service_name" example:"Netflix"`
+	Price       *PriceRubles `json:"price" binding:"omitempty,gte=0" swaggertype:"number" minimum:"0" example:"599"`
+	UserID      *string      `json:"user_id" binding:"omitempty,uuid" example:"60601fee-2bf1-4721-ae6f-7636e79a0cba"`
+	StartDate   *string      `json:"start_date" binding:"omitempty" example:"03-2024"`
+	EndDate     string       `json:"end_date" binding:"omitempty" example:"12-2025"`
 }
 
 func monthYearIndex(date string) (int, error) {

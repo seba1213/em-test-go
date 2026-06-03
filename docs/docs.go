@@ -59,6 +59,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "01-2024",
                         "description": "Period start (MM-YYYY)",
                         "name": "period_start",
                         "in": "query",
@@ -66,6 +67,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "default": "12-2024",
                         "description": "Period end (MM-YYYY)",
                         "name": "period_end",
                         "in": "query",
@@ -73,12 +75,14 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
+                        "default": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
                         "description": "Filter by user UUID",
                         "name": "user_id",
                         "in": "query"
                     },
                     {
                         "type": "string",
+                        "default": "Yandex Plus",
                         "description": "Filter by subscription service name",
                         "name": "service_name",
                         "in": "query"
@@ -186,6 +190,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
+                        "default": 1,
                         "description": "Subscription ID",
                         "name": "id",
                         "in": "path",
@@ -243,6 +248,7 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "integer",
+                        "default": 1,
                         "description": "Subscription ID",
                         "name": "id",
                         "in": "path",
@@ -301,18 +307,21 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
+                        "default": "60601fee-2bf1-4721-ae6f-7636e79a0cba",
                         "description": "Filter by user UUID",
                         "name": "user_id",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 0,
                         "description": "Page number",
                         "name": "page",
                         "in": "query"
                     },
                     {
                         "type": "integer",
+                        "default": 10,
                         "description": "Page size",
                         "name": "size",
                         "in": "query"
@@ -579,22 +588,28 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "end_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12-2025"
                 },
                 "id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1
                 },
                 "price": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 400
                 },
                 "service_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Yandex Plus"
                 },
                 "start_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "01-2024"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "60601fee-2bf1-4721-ae6f-7636e79a0cba"
                 }
             }
         },
@@ -602,19 +617,24 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "period_end": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12-2024"
                 },
                 "period_start": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "01-2024"
                 },
                 "service_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Yandex Plus"
                 },
                 "total": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 4800
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "60601fee-2bf1-4721-ae6f-7636e79a0cba"
                 }
             }
         },
@@ -627,7 +647,8 @@ const docTemplate = `{
             ],
             "properties": {
                 "end_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12-2025"
                 },
                 "price": {
                     "type": "number",
@@ -635,13 +656,16 @@ const docTemplate = `{
                     "example": 199.75
                 },
                 "service_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Yandex Plus"
                 },
                 "start_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "01-2024"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "60601fee-2bf1-4721-ae6f-7636e79a0cba"
                 }
             }
         },
@@ -649,21 +673,25 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "end_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "12-2025"
                 },
                 "price": {
                     "type": "number",
                     "minimum": 0,
-                    "example": 199.75
+                    "example": 599
                 },
                 "service_name": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "Netflix"
                 },
                 "start_date": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "03-2024"
                 },
                 "user_id": {
-                    "type": "string"
+                    "type": "string",
+                    "example": "60601fee-2bf1-4721-ae6f-7636e79a0cba"
                 }
             }
         }

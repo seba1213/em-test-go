@@ -105,44 +105,59 @@ definitions:
   models.Subscription:
     properties:
       end_date:
+        example: 12-2025
         type: string
       id:
+        example: 1
         type: integer
       price:
+        example: 400
         type: integer
       service_name:
+        example: Yandex Plus
         type: string
       start_date:
+        example: 01-2024
         type: string
       user_id:
+        example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
         type: string
     type: object
   models.SubscriptionCostResult:
     properties:
       period_end:
+        example: 12-2024
         type: string
       period_start:
+        example: 01-2024
         type: string
       service_name:
+        example: Yandex Plus
         type: string
       total:
+        example: 4800
         type: integer
       user_id:
+        example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
         type: string
     type: object
   models.SubscriptionToSave:
     properties:
       end_date:
+        example: 12-2025
         type: string
       price:
         example: 199.75
         minimum: 0
         type: number
       service_name:
+        example: Yandex Plus
         type: string
       start_date:
+        example: 01-2024
         type: string
       user_id:
+        example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
         type: string
     required:
     - service_name
@@ -152,16 +167,20 @@ definitions:
   models.SubscriptionToUpdate:
     properties:
       end_date:
+        example: 12-2025
         type: string
       price:
-        example: 199.75
+        example: 599
         minimum: 0
         type: number
       service_name:
+        example: Netflix
         type: string
       start_date:
+        example: 03-2024
         type: string
       user_id:
+        example: 60601fee-2bf1-4721-ae6f-7636e79a0cba
         type: string
     type: object
 info:
@@ -191,21 +210,25 @@ paths:
       description: 'Sums monthly prices for subscriptions active during the period.
         Optional filters: user_id, service_name.'
       parameters:
-      - description: Period start (MM-YYYY)
+      - default: 01-2024
+        description: Period start (MM-YYYY)
         in: query
         name: period_start
         required: true
         type: string
-      - description: Period end (MM-YYYY)
+      - default: 12-2024
+        description: Period end (MM-YYYY)
         in: query
         name: period_end
         required: true
         type: string
-      - description: Filter by user UUID
+      - default: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+        description: Filter by user UUID
         in: query
         name: user_id
         type: string
-      - description: Filter by subscription service name
+      - default: Yandex Plus
+        description: Filter by subscription service name
         in: query
         name: service_name
         type: string
@@ -272,7 +295,8 @@ paths:
   /subscriptions/delete/{id}:
     delete:
       parameters:
-      - description: Subscription ID
+      - default: 1
+        description: Subscription ID
         in: path
         name: id
         required: true
@@ -308,7 +332,8 @@ paths:
   /subscriptions/get/{id}:
     get:
       parameters:
-      - description: Subscription ID
+      - default: 1
+        description: Subscription ID
         in: path
         name: id
         required: true
@@ -345,15 +370,18 @@ paths:
     get:
       description: Returns a paginated list. Optional filter by user_id.
       parameters:
-      - description: Filter by user UUID
+      - default: 60601fee-2bf1-4721-ae6f-7636e79a0cba
+        description: Filter by user UUID
         in: query
         name: user_id
         type: string
-      - description: Page number
+      - default: 0
+        description: Page number
         in: query
         name: page
         type: integer
-      - description: Page size
+      - default: 10
+        description: Page size
         in: query
         name: size
         type: integer
