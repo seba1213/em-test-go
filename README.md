@@ -1,6 +1,16 @@
 # em-test-go
 Тестовое задание Junior Golang Developer Effective Mobile
 
+## Swagger
+
+```
+/v1/swagger
+```
+
+```
+/v1/swagger/doc.json
+```
+
 ## Dev Container
 
 Окружение для разработки описано в `.devcontainer/` и поднимает два сервиса:
