@@ -1,6 +1,8 @@
 package models
 
 import (
+	"log/slog"
+
 	"github.com/google/uuid"
 )
 
@@ -33,6 +35,7 @@ func CalculateSubscriptionsTotalCost(params SubscriptionCostParams) (*Subscripti
 
 	var subs []Subscription
 	if err := stmt.Find(&subs).Error; err != nil {
+		slog.Error("subscription cost query failed", "error", err)
 		return nil, err
 	}
 
@@ -40,6 +43,8 @@ func CalculateSubscriptionsTotalCost(params SubscriptionCostParams) (*Subscripti
 	for _, sub := range subs {
 		months, err := monthsBetween(sub.StartDate, sub.EndDate, params.PeriodStart, params.PeriodEnd)
 		if err != nil {
+			slog.Warn("subscription cost: skipped subscription with invalid dates",
+				"subscription_id", sub.ID, "start_date", sub.StartDate, "end_date", sub.EndDate, "error", err)
 			continue
 		}
 		total += sub.Price * months

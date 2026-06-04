@@ -5,10 +5,17 @@ import (
 	"os"
 	"strings"
 
+	"em-test-go/src/logging"
+
 	"github.com/gin-gonic/gin"
 )
 
 func abortUnauthorizedJSON(c *gin.Context, message string) {
+	logging.WithContext(c).Warn("unauthorized request",
+		"path", c.Request.URL.Path,
+		"method", c.Request.Method,
+		"reason", message,
+	)
 	c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
 		"status":  "failed",
 		"message": message,

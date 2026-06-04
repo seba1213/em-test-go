@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 
 	"gorm.io/driver/postgres"
@@ -23,14 +24,14 @@ func OpenDatabaseConnection() {
 	Database, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
+		slog.Error("database connection failed", "error", err)
 		panic(err)
-	} else {
-		fmt.Println("🚀🚀🚀🚀🚀🚀")
 	}
+	slog.Info("database connected", "host", host, "dbname", databaseName, "port", port)
 }
 
 func AutoMigrateModels() {
-	fmt.Println("START AUTO MIGRATE MODELS")
+	slog.Info("auto migrate started")
 
 	modelsToMigrate := []struct {
 		name  string
@@ -41,10 +42,10 @@ func AutoMigrateModels() {
 
 	for _, item := range modelsToMigrate {
 		if err := Database.AutoMigrate(item.model); err != nil {
-			fmt.Fprintf(os.Stderr, "Error in AutoMigrate for %s: %v\n", item.name, err)
+			slog.Error("auto migrate failed", "model", item.name, "error", err)
 			os.Exit(1)
 		}
-		fmt.Printf("%s model migrated successfully\n", item.name)
+		slog.Info("model migrated", "model", item.name)
 	}
-	fmt.Println("✅ MODELS MIGRATED SUCCESSFULLY")
+	slog.Info("auto migrate completed")
 }

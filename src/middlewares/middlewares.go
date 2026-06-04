@@ -6,5 +6,6 @@ import (
 
 // Register middleware on the base router
 func RegisterMiddlewares(router *gin.Engine) {
+	router.Use(RequestLoggingMiddleware())
 	router.Use(AuthMiddleware())
 }

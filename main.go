@@ -8,6 +8,9 @@
 package main
 
 import (
+	"log/slog"
+
+	"em-test-go/src/logging"
 	"em-test-go/src/middlewares"
 	"em-test-go/src/models"
 	"em-test-go/src/routes"
@@ -18,13 +21,16 @@ import (
 )
 
 func main() {
+	logging.Init()
+
 	models.OpenDatabaseConnection()
 	models.AutoMigrateModels()
 
 	router := gin.New()
-	router.Use(gin.Logger())
+	router.Use(gin.Recovery())
 	middlewares.RegisterMiddlewares(router)
 	routes.SetupRoutes(router)
+	slog.Info("server starting", "addr", ":8080")
 	router.Run(":8080")
 
 }

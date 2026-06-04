@@ -3,6 +3,7 @@ package controllers
 import (
 	"net/http"
 
+	"em-test-go/src/logging"
 	"em-test-go/src/models"
 
 	"github.com/gin-gonic/gin"
@@ -30,6 +31,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 	serviceName := c.Query("service_name")
 
 	if periodStart == "" {
+		logging.WithContext(c).Warn("subscription cost: missing period_start")
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "failed",
 			"message": "period_start is required",
@@ -37,6 +39,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 		return
 	}
 	if periodEnd == "" {
+		logging.WithContext(c).Warn("subscription cost: missing period_end")
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "failed",
 			"message": "period_end is required",
@@ -44,6 +47,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 		return
 	}
 	if !subscriptionDatePattern.MatchString(periodStart) {
+		logging.WithContext(c).Warn("subscription cost: invalid period_start", "period_start", periodStart)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "failed",
 			"message": "period_start must be in MM-YYYY format",
@@ -51,6 +55,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 		return
 	}
 	if !subscriptionDatePattern.MatchString(periodEnd) {
+		logging.WithContext(c).Warn("subscription cost: invalid period_end", "period_end", periodEnd)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "failed",
 			"message": "period_end must be in MM-YYYY format",
@@ -58,6 +63,8 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 		return
 	}
 	if Base.isEndDateBeforeStartDate(periodStart, periodEnd) {
+		logging.WithContext(c).Warn("subscription cost: period_end before period_start",
+			"period_start", periodStart, "period_end", periodEnd)
 		c.JSON(http.StatusBadRequest, gin.H{
 			"status":  "failed",
 			"message": "period_end must not be before period_start",
@@ -69,6 +76,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 	if userIDStr := c.Query("user_id"); userIDStr != "" {
 		parsed, err := uuid.Parse(userIDStr)
 		if err != nil {
+			logging.WithContext(c).Warn("subscription cost: invalid user_id", "user_id", userIDStr)
 			c.JSON(http.StatusBadRequest, gin.H{
 				"status":  "failed",
 				"message": "invalid user_id query parameter",
@@ -85,6 +93,7 @@ func GetSubscriptionsTotalCost(c *gin.Context) {
 		ServiceName: serviceName,
 	})
 	if err != nil {
+		logging.WithContext(c).Error("subscription cost: calculation failed", "error", err)
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status":  "failed",
 			"message": err.Error(),

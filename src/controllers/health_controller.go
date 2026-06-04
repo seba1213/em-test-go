@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log/slog"
 	"net/http"
 
 	"em-test-go/src/buildinfo"
@@ -27,6 +28,7 @@ func HealthCheck(c *gin.Context) {
 	// Check database connection
 	sqlDB, err := models.Database.DB()
 	if err != nil {
+		slog.Error("health check: database connection failed", "error", err)
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status":  "unhealthy",
 			"message": "Database connection failed",
@@ -37,6 +39,7 @@ func HealthCheck(c *gin.Context) {
 
 	// Ping database
 	if err := sqlDB.Ping(); err != nil {
+		slog.Error("health check: database ping failed", "error", err)
 		c.JSON(http.StatusServiceUnavailable, gin.H{
 			"status":  "unhealthy",
 			"message": "Database ping failed",

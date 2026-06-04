@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"log/slog"
 	"net/http"
 	"strconv"
 	"strings"
@@ -117,6 +118,7 @@ func (input *SubscriptionToSave) ToSubscription(userID uuid.UUID) *Subscription 
 
 func (sub *Subscription) Save() (*Subscription, error) {
 	if err := Database.Create(sub).Error; err != nil {
+		slog.Error("subscription save failed", "user_id", sub.UserID, "error", err)
 		return nil, err
 	}
 	return sub, nil
@@ -126,6 +128,9 @@ func FetchSubscription(id uint) (*Subscription, error) {
 	var sub Subscription
 	err := Database.Where("id = ?", id).First(&sub).Error
 	if err != nil {
+		if !errors.Is(err, gorm.ErrRecordNotFound) {
+			slog.Error("subscription fetch failed", "subscription_id", id, "error", err)
+		}
 		return nil, err
 	}
 	return &sub, nil
@@ -148,6 +153,7 @@ func (sub *Subscription) UpdateSubscription(id uint) (*Subscription, error) {
 		Updates(sub).
 		First(&result).Error
 	if err != nil {
+		slog.Error("subscription update failed", "subscription_id", id, "error", err)
 		return nil, err
 	}
 	return &result, nil
@@ -156,6 +162,7 @@ func (sub *Subscription) UpdateSubscription(id uint) (*Subscription, error) {
 func DeleteSubscription(id uint) error {
 	result := Database.Where("id = ?", id).Delete(&Subscription{})
 	if result.Error != nil {
+		slog.Error("subscription delete failed", "subscription_id", id, "error", result.Error)
 		return result.Error
 	}
 	if result.RowsAffected == 0 {
